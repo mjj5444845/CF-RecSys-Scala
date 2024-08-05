@@ -4,7 +4,6 @@ import java.io.{BufferedWriter, FileWriter}
 import scala.concurrent.Await
 import scala.concurrent.duration._
 
-// 导入其他文件中的类型和对象
 import DataLoader._
 import DataPreprocessor._
 import DataAnalyzer._
@@ -17,38 +16,36 @@ object FinalReportGenerator {
     val reportFile = "reports/final_report.txt"
     val writer = new BufferedWriter(new FileWriter(reportFile))
 
-    // 写入分析结果
-    writer.write("用户行为数据分析报告\n")
+    writer.write("User Behavior Data Analysis Report\n")
     writer.write("========================\n\n")
 
-    writer.write("用户活跃度分析:\n")
+    writer.write("User Activity Analysis:\n")
     analysisResult.userActivity.foreach { case (userId, count) =>
-      writer.write(s"用户 $userId 有 $count 次活动\n")
+      writer.write(s"User $userId has $count times activity\n")
     }
     writer.write("\n")
 
-    writer.write("商品受欢迎度分析:\n")
+    writer.write("Product Popularity analysis:\n")
     analysisResult.itemPopularity.foreach { case (itemId, count) =>
-      writer.write(s"商品 $itemId 有 $count 次评分\n")
+      writer.write(s"Item $itemId has $count ratings\n")
     }
     writer.write("\n")
 
-    writer.write("评分分布分析:\n")
+    writer.write("Rating Distribution:\n")
     analysisResult.ratingDistribution.foreach { case (rating, count) =>
-      writer.write(s"评分 $rating 出现了 $count 次\n")
+      writer.write(s"Rating $rating appears $count times\n")
     }
     writer.write("\n")
 
-    // 写入推荐结果
-    writer.write("推荐结果:\n")
+    writer.write("Recommendation Result:\n")
     writer.write("==========\n\n")
 
     recommendations.foreach { recommendation =>
-      writer.write(s"用户 ${recommendation.userId} 推荐的商品: ${recommendation.recommendedItems.mkString(", ")}\n")
+      writer.write(s"User ${recommendation.userId} recommends: ${recommendation.recommendedItems.mkString(", ")}\n")
     }
 
     writer.close()
-    println(s"报告已生成：$reportFile")
+    println(s"Report Generated：$reportFile")
   }
 
   def main(args: Array[String]): Unit = {

@@ -6,11 +6,11 @@ case class Recommendation(userId: String, recommendedItems: List[String])
 
 object Recommender {
 
-  // 计算商品相似度矩阵
+  // Calculate Item Similarity Matrix
   def calculateItemSimilarity(userBehaviorData: List[UserBehavior]): Map[(String, String), Double] = {
     val itemRatings = mutable.Map[String, mutable.Map[String, Double]]().withDefaultValue(mutable.Map[String, Double]())
     
-    // 构建商品评分矩阵
+    // Build item rating Matrix
     userBehaviorData.foreach { behavior =>
       if (!itemRatings.contains(behavior.itemId)) {
         itemRatings(behavior.itemId) = mutable.Map[String, Double]()
@@ -18,7 +18,7 @@ object Recommender {
       itemRatings(behavior.itemId)(behavior.userId) = behavior.rating
     }
     
-    // 计算商品相似度
+    // Calculate Item Similarity
     val itemPairs = for {
       item1 <- itemRatings.keys
       item2 <- itemRatings.keys if item1 < item2
@@ -40,11 +40,11 @@ object Recommender {
     itemSimilarity
   }
 
-  // 为每个用户生成推荐
+  // Generate recommendation for every user
   def generateRecommendations(userBehaviorData: List[UserBehavior], itemSimilarity: Map[(String, String), Double]): List[Recommendation] = {
     val userRatings = mutable.Map[String, mutable.Map[String, Double]]().withDefaultValue(mutable.Map[String, Double]())
     
-    // 构建用户评分矩阵
+    // Build user rating Matrix
     userBehaviorData.foreach { behavior =>
       if (!userRatings.contains(behavior.userId)) {
         userRatings(behavior.userId) = mutable.Map[String, Double]()
@@ -52,7 +52,7 @@ object Recommender {
       userRatings(behavior.userId)(behavior.itemId) = behavior.rating
     }
     
-    // 生成推荐
+    // Generate Recommendation
     val recommendations = userRatings.map { case (userId, ratings) =>
       val scoredItems = mutable.Map[String, Double]().withDefaultValue(0.0)
       

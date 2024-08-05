@@ -7,12 +7,12 @@ import scala.collection.mutable
 
 object ConcurrencyHandler {
 
-  // 并发计算商品相似度矩阵
+  // calculate the item similarity matrix concurrently
   def calculateItemSimilarityConcurrently(userBehaviorData: List[UserBehavior]): Future[Map[(String, String), Double]] = Future {
     Recommender.calculateItemSimilarity(userBehaviorData)
   }
 
-  // 并发生成推荐
+  // generate commendation concurrently
   def generateRecommendationsConcurrently(userBehaviorData: List[UserBehavior], itemSimilarity: Map[(String, String), Double]): Future[List[Recommendation]] = Future {
     Recommender.generateRecommendations(userBehaviorData, itemSimilarity)
   }
@@ -34,7 +34,7 @@ object ConcurrencyHandler {
       }
     }
 
-    // 阻止主线程过早退出
+    // prevent the main thread early exit
     Thread.sleep(5000)
   }
 }
